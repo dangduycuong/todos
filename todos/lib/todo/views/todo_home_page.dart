@@ -37,7 +37,7 @@ class _TodosHomeViewState extends State<TodosHomeView> {
   }
 
   void _gotoAddTodo(BuildContext context) async {
-    await Navigator.pushNamed(context, AddTodoPage.routeName);
+    await Navigator.pushNamed(context, AddNewTodoPage.routeName);
     bloc.add(TodoEventLoadData(todosType));
     setState(() {});
   }

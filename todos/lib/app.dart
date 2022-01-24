@@ -14,6 +14,7 @@ class App extends StatelessWidget {
       routes: {
         AddTodoPage.routeName: (context) => const AddTodoPage(),
         TodoDetailPage.routeName: (context) => const TodoDetailPage(),
+        AddNewTodoPage.routeName: (context) => const AddNewTodoPage(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

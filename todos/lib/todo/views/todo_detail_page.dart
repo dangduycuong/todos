@@ -10,7 +10,7 @@ class TodoDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TodoModel todo =
-        ModalRoute.of(context)!.settings.arguments as TodoModel;
+        ModalRoute.of(context)?.settings.arguments as TodoModel;
     return BlocProvider(
       create: (context) => TodoBloc(),
       child: TodoDetailView(
@@ -40,9 +40,9 @@ class _TodoDetailViewState extends State<TodoDetailView> {
 
   @override
   void initState() {
-    _todoTitleController.text = widget.todoDetail.title;
-    _todoDescriptionController.text = widget.todoDetail.description;
-    _isCompleted = widget.todoDetail.isCompleted;
+    _todoTitleController.text = widget.todoDetail.title ?? '';
+    _todoDescriptionController.text = widget.todoDetail.description ?? '';
+    _isCompleted = widget.todoDetail.isCompleted ?? false;
     bloc = context.read();
     bloc.add(TodoEventInit());
     super.initState();
@@ -131,7 +131,7 @@ class _TodoDetailViewState extends State<TodoDetailView> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () async {
-                        bloc.add(const EventManHinhKhac());
+                        // bloc.add(const EventTextChange());
                         if (_formKey.currentState!.validate()) {
                           _updateTodo();
                         } else {

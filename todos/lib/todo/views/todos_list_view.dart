@@ -40,7 +40,8 @@ class _TodosListViewState extends State<TodosListView> {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
-                bloc.add(TodoEventViewDetail(bloc.todos[index].id));
+                final String id = bloc.todos[index].id ?? '';
+                bloc.add(TodoEventViewDetail(id));
               },
               child: Row(
                 children: [
@@ -62,16 +63,16 @@ class _TodosListViewState extends State<TodosListView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          bloc.todos[index].title,
+                          bloc.todos[index].title ?? '',
                           maxLines: 1,
                           style: TextStyle(
-                              color: bloc.todos[index].isCompleted
+                              color: bloc.todos[index].isCompleted ?? false
                                   ? Colors.blue
                                   : Colors.redAccent,
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          bloc.todos[index].description,
+                          bloc.todos[index].description ?? '',
                           maxLines: 1,
                         ),
                       ],
@@ -79,7 +80,8 @@ class _TodosListViewState extends State<TodosListView> {
                   ),
                   IconButton(
                       onPressed: () {
-                        bloc.add(TodoEventDelete(bloc.todos[index].id));
+                        final String id = bloc.todos[index].id ?? '';
+                        bloc.add(TodoEventDelete(id));
                       },
                       icon: const Icon(Icons.remove)),
                 ],

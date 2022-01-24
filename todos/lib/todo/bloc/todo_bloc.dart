@@ -10,6 +10,7 @@ part 'todo_state.dart';
 
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   List<TodoModel> todos = [];
+  TodoModel todoItem = TodoModel();
   late final Box box;
 
   TodoBloc() : super(TodoInitial()) {
@@ -21,6 +22,17 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<TodoEventLoadData>(_fetchTodosData);
     on<TodoEventReloadLoadData>(_reloadData);
     on<TodoEventViewDetail>(_viewDetail);
+    on<EventTextChange>(_onChangeText);
+    on<EventAddOrModifyTodo>(_addOrModifyTodo);
+  }
+
+  void _addOrModifyTodo(EventAddOrModifyTodo event, Emitter<TodoState> emit) {
+    if (event.isAdd) {}
+  }
+
+  void _onChangeText(EventTextChange event, Emitter<TodoState> emit) {
+    todoItem.title = event.todo.title;
+    todoItem.title = event.todo.title;
   }
 
   void _hiveInit(TodoEventInit event, Emitter<TodoState> emit) {
@@ -33,7 +45,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   void _modifyTodo(TodoEventModify event, Emitter<TodoState> emit) {
-    int index = getIndexOfItem(event.todo.id);
+    final String id = event.todo.id ?? '';
+    int index = getIndexOfItem(id);
     box.putAt(index, event.todo);
     emit(ReloadData());
   }
@@ -65,12 +78,13 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     todos = [];
     for (int index = 0; index < box.length; index++) {
       final TodoModel todo = box.getAt(index) as TodoModel;
+      final bool isCompleted = todo.isCompleted ?? false;
       switch (todosType) {
         case (TodosType.all):
           todos.add(todo);
           break;
         case TodosType.completed:
-          if (todo.isCompleted) {
+          if (isCompleted) {
             todos.add(todo);
           }
           break;

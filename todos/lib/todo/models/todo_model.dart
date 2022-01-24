@@ -5,21 +5,21 @@ part 'todo_model.g.dart';
 @HiveType(typeId: 0)
 class TodoModel {
   @HiveField(0)
-  final String id;
+  final String? id;
 
   @HiveField(1)
-  final String title;
+  String? title;
 
   @HiveField(2)
-  final String description;
+  String? description;
 
   @HiveField(3)
-  final bool isCompleted;
+  bool? isCompleted;
 
   TodoModel({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.isCompleted,
+    this.id,
+    this.title,
+    this.description,
+    this.isCompleted,
   });
 }

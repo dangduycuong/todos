@@ -3,3 +3,8 @@ enum TodosType {
   completed,
   incomplete,
 }
+
+enum TodoEnterText {
+  title,
+  description,
+}

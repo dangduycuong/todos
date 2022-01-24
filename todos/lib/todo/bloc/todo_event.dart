@@ -60,8 +60,16 @@ class TodoEventViewDetail extends TodoEvent {
   List<Object?> get props => [id];
 }
 
-class EventManHinhKhac extends TodoEvent {
-  const EventManHinhKhac();
+class EventTextChange extends TodoEvent {
+  final TodoModel todo;
+  const EventTextChange(this.todo);
   @override
   List<Object?> get props => [];
+}
+
+class EventAddOrModifyTodo extends TodoEvent {
+  final bool isAdd;
+  const EventAddOrModifyTodo(this.isAdd);
+  @override
+  List<Object?> get props => [isAdd];
 }
