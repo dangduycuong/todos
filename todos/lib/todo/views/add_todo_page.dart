@@ -34,10 +34,13 @@ class _AddNewTodoPageState extends State<AddNewTodoPage> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    const EnterTextFormField(
+                    EnterTextFormField(
                       enterTextType: TodoEnterText.title,
                       labelText: 'Title',
                       hintText: 'Enter Todo Title',
+                      onChange: (value){
+
+                      },
                     ),
                     Expanded(
                       child: EnterTextFormField(
@@ -45,6 +48,7 @@ class _AddNewTodoPageState extends State<AddNewTodoPage> {
                         labelText: 'Description',
                         hintText: 'Enter Todo Description',
                         maxLines: null,
+                        onChange: (value){},
                       ),
                     ),
                     Row(

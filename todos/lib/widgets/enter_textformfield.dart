@@ -4,19 +4,25 @@ import 'package:todos/todo/bloc/todo_bloc.dart';
 import 'package:todos/todo/models/todo_model.dart';
 import 'package:todos/todo/models/todos_type.dart';
 
+/*
+* // typedef TextChangValue = Function(String value);
+//final TextChangValue onChange;
+//final Function(String value) onChange*/
+
 class EnterTextFormField extends StatefulWidget {
   const EnterTextFormField({
     Key? key,
     required this.enterTextType,
     required this.labelText,
     required this.hintText,
-    this.maxLines,
+    this.maxLines,required this.onChange,
   }) : super(key: key);
 
   final TodoEnterText enterTextType;
   final String labelText;
   final String hintText;
   final int? maxLines;
+  final ValueChanged onChange;
 
   @override
   _EnterTextFormFieldState createState() => _EnterTextFormFieldState();
@@ -59,9 +65,7 @@ class _EnterTextFormFieldState extends State<EnterTextFormField> {
         } else {
           todo.description = _textController.text;
         }
-        _todoBloc.add(
-          EventTextChange(todo),
-        );
+        widget.onChange(text);
       },
       decoration: InputDecoration(
         suffixIcon: GestureDetector(
