@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:todos/todo/models/todo_model.dart';
 import 'package:todos/todo/models/todos_type.dart';
+import 'package:uuid/uuid.dart';
 
 part 'todo_event.dart';
 
@@ -16,39 +17,28 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   TodoBloc() : super(TodoInitial()) {
     on<TodoEvent>((event, emit) {});
     on<TodoEventInit>(_hiveInit);
-    on<TodoEventAdd>(_addTodo);
-    on<TodoEventModify>(_modifyTodo);
+    on<EventAddOrModifyTodo>(_addOrModifyTodo);
     on<TodoEventDelete>(_deleteTodo);
     on<TodoEventLoadData>(_fetchTodosData);
-    on<TodoEventReloadLoadData>(_reloadData);
-    on<TodoEventViewDetail>(_viewDetail);
-    on<EventTextChange>(_onChangeText);
-    on<EventAddOrModifyTodo>(_addOrModifyTodo);
   }
 
   void _addOrModifyTodo(EventAddOrModifyTodo event, Emitter<TodoState> emit) {
-    if (event.isAdd) {}
-  }
-
-  void _onChangeText(EventTextChange event, Emitter<TodoState> emit) {
-    todoItem.title = event.todo.title;
-    todoItem.title = event.todo.title;
+    if (event.isAdd) {
+      var uuid = const Uuid();
+      String id = uuid.v1();
+      todoItem = event.todo;
+      todoItem.id = id;
+      box.add(todoItem);
+    } else {
+      final String id = event.todo.id ?? '';
+      int index = getIndexOfItem(id);
+      box.putAt(index, event.todo);
+    }
+    emit(ReloadData());
   }
 
   void _hiveInit(TodoEventInit event, Emitter<TodoState> emit) {
     box = Hive.box('todoBox');
-  }
-
-  void _addTodo(TodoEventAdd event, Emitter<TodoState> emit) {
-    box.add(event.todo);
-    emit(LoadDataSuccess());
-  }
-
-  void _modifyTodo(TodoEventModify event, Emitter<TodoState> emit) {
-    final String id = event.todo.id ?? '';
-    int index = getIndexOfItem(id);
-    box.putAt(index, event.todo);
-    emit(ReloadData());
   }
 
   void _deleteTodo(TodoEventDelete event, Emitter<TodoState> emit) {
@@ -58,20 +48,12 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   void _fetchTodosData(TodoEventLoadData event, Emitter<TodoState> emit) {
-    emit(TodoStateLoading());
+    if (event.showLoading) {
+      emit(TodoStateLoading());
+    }
+
     _filterTodos(event.todosType);
     emit(LoadDataSuccess());
-  }
-
-  void _reloadData(TodoEventReloadLoadData event, Emitter<TodoState> emit) {
-    _filterTodos(event.todosType);
-    emit(LoadDataSuccess());
-  }
-
-  void _viewDetail(TodoEventViewDetail event, Emitter<TodoState> emit) {
-    int index = getIndexOfItem(event.id);
-    final TodoModel todo = box.getAt(index) as TodoModel;
-    emit(GotoTodoDetail(todo));
   }
 
   void _filterTodos(TodosType todosType) {

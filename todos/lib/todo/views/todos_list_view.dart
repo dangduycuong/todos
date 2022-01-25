@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todos/todo/bloc/todo_bloc.dart';
 import 'package:todos/todo/models/todo_model.dart';
 import 'package:todos/todo/models/todos_type.dart';
-import 'package:todos/todo/views/todo_detail_page.dart';
 import 'package:todos/widgets/loading_list_page.dart';
+
+import 'add_or_modify_todo_page.dart';
 
 class TodosListView extends StatefulWidget {
   const TodosListView({Key? key, required this.todosType}) : super(key: key);
@@ -21,14 +22,14 @@ class _TodosListViewState extends State<TodosListView> {
   @override
   void initState() {
     bloc = context.read();
-    bloc.add(TodoEventLoadData(widget.todosType));
+    bloc.add(TodoEventLoadData(widget.todosType, false));
     super.initState();
   }
 
   void _viewTodoDetail(BuildContext context, TodoModel todo) async {
-    await Navigator.pushNamed(context, TodoDetailPage.routeName,
+    await Navigator.pushNamed(context, AddOrModifyTodoPage.routeName,
         arguments: todo);
-    bloc.add(TodoEventReloadLoadData(widget.todosType));
+    bloc.add(TodoEventLoadData(widget.todosType, true));
     setState(() {});
   }
 
@@ -40,8 +41,7 @@ class _TodosListViewState extends State<TodosListView> {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
-                final String id = bloc.todos[index].id ?? '';
-                bloc.add(TodoEventViewDetail(id));
+                _viewTodoDetail(context, bloc.todos[index]);
               },
               child: Row(
                 children: [
@@ -55,7 +55,7 @@ class _TodosListViewState extends State<TodosListView> {
                         description: todo.description,
                         isCompleted: value!,
                       );
-                      bloc.add(TodoEventModify(newTodo));
+                      bloc.add(EventAddOrModifyTodo(false, newTodo));
                     },
                   ),
                   Expanded(
@@ -111,11 +111,7 @@ class _TodosListViewState extends State<TodosListView> {
         setState(() {});
       }
       if (state is ReloadData) {
-        bloc.add(TodoEventReloadLoadData(widget.todosType));
-      }
-
-      if (state is GotoTodoDetail) {
-        _viewTodoDetail(context, state.todo);
+        bloc.add(TodoEventLoadData(widget.todosType, false));
       }
     });
   }

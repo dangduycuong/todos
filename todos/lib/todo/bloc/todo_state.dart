@@ -24,11 +24,4 @@ class ReloadData extends TodoState {
   List<Object> get props => [];
 }
 
-class GotoTodoDetail extends TodoState {
-  final TodoModel todo;
 
-  const GotoTodoDetail(this.todo);
-
-  @override
-  List<Object> get props => [todo];
-}

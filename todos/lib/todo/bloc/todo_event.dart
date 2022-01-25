@@ -9,23 +9,6 @@ class TodoEventInit extends TodoEvent {
   List<Object?> get props => [];
 }
 
-class TodoEventAdd extends TodoEvent {
-  final TodoModel todo;
-
-  const TodoEventAdd(this.todo);
-
-  @override
-  List<Object?> get props => [];
-}
-
-class TodoEventModify extends TodoEvent {
-  final TodoModel todo;
-
-  const TodoEventModify(this.todo);
-  @override
-  List<Object?> get props => [todo];
-}
-
 class TodoEventDelete extends TodoEvent {
   final String id;
 
@@ -36,40 +19,21 @@ class TodoEventDelete extends TodoEvent {
 }
 
 class TodoEventLoadData extends TodoEvent {
+  final bool showLoading;
   final TodosType todosType;
 
-  const TodoEventLoadData(this.todosType);
+  const TodoEventLoadData(this.todosType, this.showLoading);
 
   @override
   List<Object?> get props => [todosType];
-}
-
-class TodoEventReloadLoadData extends TodoEvent {
-  final TodosType todosType;
-
-  const TodoEventReloadLoadData(this.todosType);
-
-  @override
-  List<Object?> get props => [todosType];
-}
-
-class TodoEventViewDetail extends TodoEvent {
-  final String id;
-  const TodoEventViewDetail(this.id);
-  @override
-  List<Object?> get props => [id];
-}
-
-class EventTextChange extends TodoEvent {
-  final TodoModel todo;
-  const EventTextChange(this.todo);
-  @override
-  List<Object?> get props => [];
 }
 
 class EventAddOrModifyTodo extends TodoEvent {
   final bool isAdd;
-  const EventAddOrModifyTodo(this.isAdd);
+  final TodoModel todo;
+
+  const EventAddOrModifyTodo(this.isAdd, this.todo);
+
   @override
-  List<Object?> get props => [isAdd];
+  List<Object?> get props => [isAdd, todo];
 }

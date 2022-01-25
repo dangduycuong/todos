@@ -5,7 +5,7 @@ import 'package:todos/todo/bloc/todo_bloc.dart';
 import 'package:todos/todo/models/todos_type.dart';
 import 'package:todos/todo/views/todos_list_view.dart';
 
-import 'add_todo_page.dart';
+import 'add_or_modify_todo_page.dart';
 
 class TodosHomePage extends StatelessWidget {
   const TodosHomePage({Key? key}) : super(key: key);
@@ -37,8 +37,10 @@ class _TodosHomeViewState extends State<TodosHomeView> {
   }
 
   void _gotoAddTodo(BuildContext context) async {
-    await Navigator.pushNamed(context, AddNewTodoPage.routeName);
-    bloc.add(TodoEventLoadData(todosType));
+    // await Navigator.pushNamed(context, AddNewTodoPage.routeName);
+    await Navigator.pushNamed(context, AddOrModifyTodoPage.routeName);
+
+    bloc.add(TodoEventLoadData(todosType, true));
     setState(() {});
   }
 
@@ -68,7 +70,7 @@ class _TodosHomeViewState extends State<TodosHomeView> {
     }
     _currentSelection = index;
 
-    bloc.add(TodoEventLoadData(todosType));
+    bloc.add(TodoEventLoadData(todosType, true));
     setState(() {});
   }
 

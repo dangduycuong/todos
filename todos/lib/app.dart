@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todos/todo/views/add_todo_page.dart';
-import 'package:todos/todo/views/todo_detail_page.dart';
+import 'package:todos/todo/views/add_or_modify_todo_page.dart';
 import 'package:todos/todo/views/todo_home_page.dart';
 
 class App extends StatelessWidget {
@@ -12,9 +11,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       routes: {
-        AddTodoPage.routeName: (context) => const AddTodoPage(),
-        TodoDetailPage.routeName: (context) => const TodoDetailPage(),
-        AddNewTodoPage.routeName: (context) => const AddNewTodoPage(),
+        AddOrModifyTodoPage.routeName: (context) => const AddOrModifyTodoPage(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/src/provider.dart';
-import 'package:todos/todo/bloc/todo_bloc.dart';
 import 'package:todos/todo/models/todo_model.dart';
 import 'package:todos/todo/models/todos_type.dart';
 
@@ -15,13 +13,16 @@ class EnterTextFormField extends StatefulWidget {
     required this.enterTextType,
     required this.labelText,
     required this.hintText,
-    this.maxLines,required this.onChange,
+    this.maxLines,
+    this.initialValue,
+    required this.onChange,
   }) : super(key: key);
 
   final TodoEnterText enterTextType;
   final String labelText;
   final String hintText;
   final int? maxLines;
+  final String? initialValue;
   final ValueChanged onChange;
 
   @override
@@ -30,12 +31,10 @@ class EnterTextFormField extends StatefulWidget {
 
 class _EnterTextFormFieldState extends State<EnterTextFormField> {
   final _textController = TextEditingController();
-  late TodoBloc _todoBloc;
 
   @override
   void initState() {
     super.initState();
-    _todoBloc = context.read<TodoBloc>();
   }
 
   @override
@@ -46,6 +45,9 @@ class _EnterTextFormFieldState extends State<EnterTextFormField> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.initialValue != null) {
+      _textController.text = widget.initialValue!;
+    }
     return TextFormField(
       validator: (value) {
         if (value?.isEmpty ?? false) {
@@ -57,9 +59,7 @@ class _EnterTextFormFieldState extends State<EnterTextFormField> {
       controller: _textController,
       autocorrect: false,
       onChanged: (text) {
-        TodoModel todo = TodoModel(
-
-        );
+        TodoModel todo = TodoModel();
         if (widget.enterTextType == TodoEnterText.title) {
           todo.title = _textController.text;
         } else {
